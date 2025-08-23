@@ -1210,148 +1210,202 @@ end
     Callback(Default)
     
     local TextButton = Create("Frame", parent, {
-      Size = UDim2.new(1, 0, 0, 25),
-      BackgroundColor3 = Configs_HUB.Cor_Options,
-    })Stroke(TextButton)Corner(TextButton)
+        Size = UDim2.new(1, 0, 0, 25),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+    })
+    Stroke(TextButton)
+    Corner(TextButton)
     
     local click = Create("TextButton", TextButton, {
-      Size = UDim2.new(1, 0, 0, 25),
-      BackgroundTransparency = 1,
-      AutoButtonColor = false,
-      Text = ""
+        Size = UDim2.new(1, 0, 0, 25),
+        BackgroundTransparency = 1,
+        AutoButtonColor = false,
+        Text = ""
     })
     
     local TextLabel = Create("TextLabel", TextButton, {
-      Size = UDim2.new(1, -10, 0, 25),
-      Position = UDim2.new(0, 35, 0, 0),
-      TextSize = 12,
-      TextColor3 = Configs_HUB.Cor_Text,
-      TextXAlignment = "Left",
-      Text = name,
-      Font = Configs_HUB.Text_Font,
-      BackgroundTransparency = 1
+        Size = UDim2.new(1, -10, 0, 25),
+        Position = UDim2.new(0, 35, 0, 0),
+        TextSize = 12,
+        TextColor3 = Configs_HUB.Cor_Text,
+        TextXAlignment = "Left",
+        Text = name,
+        Font = Configs_HUB.Text_Font,
+        BackgroundTransparency = 1
+    })
+    
+    local HexLabel = Create("TextLabel", TextButton, {
+        Size = UDim2.new(0, 80, 0, 25),
+        Position = UDim2.new(1, -85, 0, 0),
+        TextSize = 12,
+        TextColor3 = Configs_HUB.Cor_Text,
+        TextXAlignment = "Right",
+        Text = "",
+        Font = Configs_HUB.Text_Font,
+        BackgroundTransparency = 1
     })
     
     local picker = Create("Frame", TextButton, {
-      Size = UDim2.new(0, 20, 0, 20),
-      Position = UDim2.new(0, 5, 0, 2.5),
-      BackgroundColor3 = Default
-    })Corner(picker)Stroke(picker)
+        Size = UDim2.new(0, 20, 0, 20),
+        Position = UDim2.new(0, 5, 0, 2.5),
+        BackgroundColor3 = Default
+    })
+    Corner(picker)
+    Stroke(picker)
     
     local UI_Grade = Create("ImageButton", TextButton, {
-      Size = UDim2.new(1, -100, 1, tonumber(-TextButton.Size.Y.Offset - 20)),
-      Position = UDim2.new(0, 10, 0, tonumber(TextButton.Size.Y.Offset + 12.5)),
-      Visible = false,
-      Image = "rbxassetid://4155801252"
-    })Corner(UI_Grade)Stroke(UI_Grade)local SavePos = Create("Frame", UI_Grade, {Visible = false})
+        Size = UDim2.new(1, -100, 1, tonumber(-TextButton.Size.Y.Offset - 20)),
+        Position = UDim2.new(0, 10, 0, tonumber(TextButton.Size.Y.Offset + 12.5)),
+        Visible = false,
+        Image = "rbxassetid://4155801252"
+    })
+    Corner(UI_Grade)
+    Stroke(UI_Grade)
+    local SavePos = Create("Frame", UI_Grade, {Visible = false})
     
     local grade = Create("TextButton", TextButton, {
-      Size = UDim2.new(0, 30, 1, tonumber(-TextButton.Size.Y.Offset - 20)),
-      Position = UDim2.new(1, -10, 0, tonumber(TextButton.Size.Y.Offset + 12.5)),
-      AnchorPoint = Vector2.new(1, 0),
-      Visible = false,
-      Text = ""
-    })Corner(grade)Stroke(grade)Create("UIGradient", grade, {
-      Rotation = 90,
-      Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)),
-        ColorSequenceKeypoint.new(0.20, Color3.fromRGB(234, 255, 0)),
-        ColorSequenceKeypoint.new(0.40, Color3.fromRGB(21, 255, 0)),
-        ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 255)),
-        ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 17, 255)),
-        ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 251)),
-        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 4))
-      })
-    })local SavePos2 = Create("Frame", grade, {Visible = false, Size = UDim2.new(1, 0, 0, 0)})
+        Size = UDim2.new(0, 30, 1, tonumber(-TextButton.Size.Y.Offset - 20)),
+        Position = UDim2.new(1, -10, 0, tonumber(TextButton.Size.Y.Offset + 12.5)),
+        AnchorPoint = Vector2.new(1, 0),
+        Visible = false,
+        Text = ""
+    })
+    Corner(grade)
+    Stroke(grade)
+    Create("UIGradient", grade, {
+        Rotation = 90,
+        Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)),
+            ColorSequenceKeypoint.new(0.20, Color3.fromRGB(234, 255, 0)),
+            ColorSequenceKeypoint.new(0.40, Color3.fromRGB(21, 255, 0)),
+            ColorSequenceKeypoint.new(0.60, Color3.fromRGB(0, 255, 255)),
+            ColorSequenceKeypoint.new(0.80, Color3.fromRGB(0, 17, 255)),
+            ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 0, 251)),
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 4))
+        })
+    })
+    local SavePos2 = Create("Frame", grade, {Visible = false, Size = UDim2.new(1, 0, 0, 0)})
     
     local A_1 = Create("Frame", TextButton, {
-      Size = UDim2.new(1, 0, 0, 0),
-      Position = UDim2.new(0, 0, 0, 30),
-      Visible = false
-    })Stroke(A_1)
+        Size = UDim2.new(1, 0, 0, 0),
+        Position = UDim2.new(0, 0, 0, 30),
+        Visible = false
+    })
+    Stroke(A_1)
     
     local Select1 = Create("Frame", grade, {
-      Size = UDim2.new(1, 0, 0, 10),
-      Position = UDim2.new(0, 0, 0, select(3, Color3.toHSV(Default))),
-      BackgroundTransparency = 1,
-      Active = true,
-      Draggable = true
-    })Corner(Select1, {CornerRadius = UDim.new(2, 0)})Stroke(Select1, {Color = Color3.fromRGB(255, 255, 255)})
+        Size = UDim2.new(1, 0, 0, 10),
+        Position = UDim2.new(0, 0, 0, select(3, Color3.toHSV(Default))),
+        BackgroundTransparency = 1,
+        Active = true,
+        Draggable = true
+    })
+    Corner(Select1, {CornerRadius = UDim.new(2, 0)})
+    Stroke(Select1, {Color = Color3.fromRGB(255, 255, 255)})
     
     local Select2 = Create("Frame", UI_Grade, {
-      Size = UDim2.new(0, 15, 0, 15),
-      Position = UDim2.new(0, select(2, Color3.toHSV(Default)), 0, select(1, Color3.toHSV(Default))),
-      BackgroundTransparency = 1,
-      Active = true,
-      Draggable = true
-    })Corner(Select2, {CornerRadius = UDim.new(2, 0)})Stroke(Select2, {Color = Color3.fromRGB(255, 255, 255)})
-  
-    UI_Grade.MouseButton1Click:Connect(function()
-      local mouse = UserInputService:GetMouseLocation()
-      local savepos = SavePos.AbsolutePosition
-      CreateTween(Select2, "Position", UDim2.new(0, mouse.X - savepos.X, 0, tonumber(mouse.Y - savepos.Y) - 35), 0.3, false)
-    end)
+        Size = UDim2.new(0, 15, 0, 15),
+        Position = UDim2.new(0, select(2, Color3.toHSV(Default)), 0, select(1, Color3.toHSV(Default))),
+        BackgroundTransparency = 1,
+        Active = true,
+        Draggable = true
+    })
+    Corner(Select2, {CornerRadius = UDim.new(2, 0)})
+    Stroke(Select2, {Color = Color3.fromRGB(255, 255, 255)})
     
-    grade.MouseButton1Click:Connect(function()
-      local mouse = UserInputService:GetMouseLocation().Y - 35
-      local savepos = SavePos2.AbsolutePosition.Y
-      CreateTween(Select1, "Position", UDim2.new(0, 0, 0, mouse - savepos), 0.3, false)
-    end)
+    local ResetBtn = Create("TextButton", TextButton, {
+        Size = UDim2.new(0, 50, 0, 20),
+        Position = UDim2.new(0, 5, 0, 25),
+        Text = "Reset",
+        TextSize = 12,
+        Font = Configs_HUB.Text_Font,
+        TextColor3 = Configs_HUB.Cor_Text,
+        BackgroundColor3 = Configs_HUB.Cor_Options
+    })
+    Corner(ResetBtn)
+    Stroke(ResetBtn)
     
-    local function callback()Callback(Color3.fromHSV(ColorH, ColorS, ColorV))end
+    local SaveBtn = Create("TextButton", TextButton, {
+        Size = UDim2.new(0, 50, 0, 20),
+        Position = UDim2.new(0, 60, 0, 25),
+        Text = "Save",
+        TextSize = 12,
+        Font = Configs_HUB.Text_Font,
+        TextColor3 = Configs_HUB.Cor_Text,
+        BackgroundColor3 = Configs_HUB.Cor_Options
+    })
+    Corner(SaveBtn)
+    Stroke(SaveBtn)
+    
+    local function callback()
+        Callback(Color3.fromHSV(ColorH, ColorS, ColorV))
+        local r, g, b = math.floor(Color3.fromHSV(ColorH, ColorS, ColorV).R*255), math.floor(Color3.fromHSV(ColorH, ColorS, ColorV).G*255), math.floor(Color3.fromHSV(ColorH, ColorS, ColorV).B*255)
+        HexLabel.Text = string.format("#%02X%02X%02X  (%d, %d, %d)", r, g, b, r, g, b)
+    end
+    
     local function updcolorpicker()
-      ColorH = tonumber(Select1.Position.Y.Offset) / 80
-      ColorS = tonumber(215 - Select2.Position.X.Offset) / 215
-      ColorV = tonumber(75 - Select2.Position.Y.Offset) / 75
-      UI_Grade.ImageColor3 = Color3.fromHSV(ColorH, 1, 1)
-      picker.BackgroundColor3 = Color3.fromHSV(ColorH, ColorS, ColorV)
-      callback()
+        ColorH = tonumber(Select1.Position.Y.Offset) / 80
+        ColorS = tonumber(215 - Select2.Position.X.Offset) / 215
+        ColorV = tonumber(75 - Select2.Position.Y.Offset) / 75
+        UI_Grade.ImageColor3 = Color3.fromHSV(ColorH, 1, 1)
+        picker.BackgroundColor3 = Color3.fromHSV(ColorH, ColorS, ColorV)
+        callback()
     end
     
     updcolorpicker()
     
     Select1.Changed:Connect(function(prop)
-      if prop == "Position" then
-        Select1.Position = UDim2.new(0, 0, 0, math.clamp(Select1.Position.Y.Offset, 0, 80))
-        updcolorpicker()
-      end
+        if prop == "Position" then
+            Select1.Position = UDim2.new(0, 0, 0, math.clamp(Select1.Position.Y.Offset, 0, 80))
+            updcolorpicker()
+        end
     end)
     
     Select2.Changed:Connect(function(prop)
-      if prop == "Position" then
-        Select2.Position = UDim2.new(0, math.clamp(Select2.Position.X.Offset, 0, 222), 0, math.clamp(Select2.Position.Y.Offset, 0, 75))
-        updcolorpicker()
-      end
+        if prop == "Position" then
+            Select2.Position = UDim2.new(0, math.clamp(Select2.Position.X.Offset, 0, 215), 0, math.clamp(Select2.Position.Y.Offset, 0, 75))
+            updcolorpicker()
+        end
     end)
     
     TextButton.Changed:Connect(function(prop)
-      if prop == "Size" then
-        if TextButton.Size.Y.Offset >= 60 then
-          picker.Position = UDim2.new(0, 5, 0, 5)
-          UI_Grade.Visible = true
-          A_1.Visible = true
-          grade.Visible = true
-        else
-          picker.Position = UDim2.new(0, 5, 0, 2.5)
-          UI_Grade.Visible = false
-          A_1.Visible = false
-          grade.Visible = false
+        if prop == "Size" then
+            if TextButton.Size.Y.Offset >= 60 then
+                picker.Position = UDim2.new(0, 5, 0, 5)
+                UI_Grade.Visible = true
+                A_1.Visible = true
+                grade.Visible = true
+                ResetBtn.Visible = true
+                SaveBtn.Visible = true
+            else
+                picker.Position = UDim2.new(0, 5, 0, 2.5)
+                UI_Grade.Visible = false
+                A_1.Visible = false
+                grade.Visible = false
+                ResetBtn.Visible = false
+                SaveBtn.Visible = false
+            end
         end
-      end
     end)
     
     local onoff = false
     click.MouseButton1Click:Connect(function()
-      onoff = not onoff
-      if onoff == true then
-        local tween = TweenService:Create(TextButton, TweenInfo.new(0.2, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(1, 0, 0, 140)})tween:play()tween.Completed:Wait()
-      else
-        local tween = TweenService:Create(TextButton, TweenInfo.new(0.2, Enum.EasingStyle.Linear),
-        {Size = UDim2.new(1, 0, 0, 25)})tween:play()tween.Completed:Wait()
-      end
+        onoff = not onoff
+        local tween = TweenService:Create(TextButton, TweenInfo.new(0.2, Enum.EasingStyle.Linear), {Size = onoff and UDim2.new(1,0,0,140) or UDim2.new(1,0,0,25)})
+        tween:Play()
+        tween.Completed:Wait()
     end)
-  end
+    
+    ResetBtn.MouseButton1Click:Connect(function()
+        Select1.Position = UDim2.new(0,0,0,select(3, Color3.toHSV(Default)))
+        Select2.Position = UDim2.new(0, select(2, Color3.toHSV(Default)), 0, select(1, Color3.toHSV(Default)))
+        updcolorpicker()
+    end)
+    
+    SaveBtn.MouseButton1Click:Connect(function()
+        print("Saved Color:", picker.BackgroundColor3)
+    end)
+end
   
   function AddDropdown(parent, Configs)
     local DropdownName = Configs.Name or "Dropdown!!"
