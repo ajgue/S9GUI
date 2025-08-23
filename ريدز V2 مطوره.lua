@@ -216,138 +216,159 @@ function MakeWindow(Configs)
   local Anim_Title = Configs.Hub.Animation or "by : redz9999"
   
   local KeySystem = Configs.Key.KeySystem or false
-  local KeyTitle = Configs.Key.Title or "Key System"
-  local KeyDescription = Configs.Key.Description or ".-."
-  local KeyKey = Configs.Key.Keys or {"123", "321"}
-  local KeyLink = Configs.Key.KeyLink or ""
-  local KeyNotifications = Configs.Key.Notifi.Notifications or true
-  local KeyNotSuccess = Configs.Key.Notifi.Incorrectkey or "The key is incorrect"
-  local KeySuccess = Configs.Key.Notifi.CorrectKey or "Running the Script..."
-  local KeyCopyKeyLink = Configs.Key.Notifi.CopyKeyLink or "Copied to Clipboard"
-  
-  if KeySystem then
+local KeyTitle = Configs.Key.Title or "Key System"
+local KeyDescription = Configs.Key.Description or ".-."
+local KeyKey = Configs.Key.Keys or {"123", "321"}
+local KeyLink = Configs.Key.KeyLink or ""
+local KeyNotifications = Configs.Key.Notifi.Notifications or true
+local KeyNotSuccess = Configs.Key.Notifi.Incorrectkey or "The key is incorrect"
+local KeySuccess = Configs.Key.Notifi.CorrectKey or "Running the Script..."
+local KeyCopyKeyLink = Configs.Key.Notifi.CopyKeyLink or "Copied to Clipboard"
+
+if KeySystem then
     local KeyMenu = Create("Frame", ScreenGui, {
-      Size = UDim2.new(0, 400, 0, 220),
-      Position = UDim2.new(0.5, 0, 0.5, 0),
-      BackgroundColor3 = Configs_HUB.Cor_Hub,
-      AnchorPoint = Vector2.new(0.5, 0.5),
-      Active = true,
-      Draggable = true
+        Size = UDim2.new(0, 400, 0, 220),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        BackgroundTransparency = 1,
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        Active = true,
+        Draggable = true
     })Corner(KeyMenu)
-    
+
+    local Stroke = Instance.new("UIStroke", KeyMenu)
+    Stroke.Thickness = 4
+    spawn(function()
+        local hue = 0
+        while KeyMenu.Parent do
+            hue = (hue + 0.005) % 1
+            Stroke.Color = Color3.fromHSV(hue,1,1)
+            task.wait(0.03)
+        end
+    end)
+
+    local Particles = {}
+    for i=1,30 do
+        local dot = Create("Frame", KeyMenu, {
+            Size = UDim2.new(0,8,0,8),
+            Position = UDim2.new(math.random(),0,math.random(),0),
+            BackgroundColor3 = Color3.fromHSV(math.random(),1,1),
+            AnchorPoint = Vector2.new(0.5,0.5),
+            BackgroundTransparency = 0,
+        })
+        table.insert(Particles,dot)
+    end
+
+    spawn(function()
+        while KeyMenu.Parent do
+            for _,dot in pairs(Particles) do
+                local newX = math.random()
+                local newY = math.random()
+                dot:TweenPosition(UDim2.new(newX,0,newY,0),"InOut","Sine",1,true)
+            end
+            task.wait(1)
+        end
+    end)
+
     local CloseButton = Create("TextButton", KeyMenu, {
-      Size = UDim2.new(0, 30, 0, 30),
-      Position = UDim2.new(1, -10, 0, 5),
-      AnchorPoint = Vector2.new(1, 0),
-      Text = "X",
-      Font = Enum.Font.FredokaOne,
-      TextScaled = true,
-      TextColor3 = Color3.fromRGB(240, 0, 0),
-      BackgroundTransparency = 1,
+        Size = UDim2.new(0, 30, 0, 30),
+        Position = UDim2.new(1, -10, 0, 5),
+        AnchorPoint = Vector2.new(1, 0),
+        Text = "X",
+        Font = Enum.Font.FredokaOne,
+        TextScaled = true,
+        TextColor3 = Color3.fromRGB(240, 0, 0),
+        BackgroundTransparency = 1,
     })Corner(CloseButton)
-    
+
     local Title = Create("TextLabel", KeyMenu, {
-      Size = UDim2.new(1, -80, 0, 20),
-      Position = UDim2.new(0, 20, 0, 5),
-      Text = KeyTitle,
-      Font = Configs_HUB.Text_Font,
-      TextScaled = true,
-      TextColor3 = Configs_HUB.Cor_Text,
-      TextXAlignment = "Left",
-      BackgroundTransparency = 1
+        Size = UDim2.new(1, -80, 0, 20),
+        Position = UDim2.new(0, 20, 0, 5),
+        Text = KeyTitle,
+        Font = Configs_HUB.Text_Font,
+        TextScaled = true,
+        TextColor3 = Configs_HUB.Cor_Text,
+        TextXAlignment = "Left",
+        BackgroundTransparency = 1
     })
-    
+
     local Description = Create("TextLabel", KeyMenu, {
-      Size = UDim2.new(1, -80, 0, 0),
-      Text = KeyDescription,
-      TextSize = 17,
-      TextColor3 = Configs_HUB.Cor_DarkText,
-      Font = Configs_HUB.Text_Font,
-      Position = UDim2.new(0, 20, 0, 25),
-      TextXAlignment = "Left",
-      AutomaticSize = "Y",
-      TextYAlignment = "Top",
-      BackgroundTransparency = 1
+        Size = UDim2.new(1, -80, 0, 0),
+        Text = KeyDescription,
+        TextSize = 17,
+        TextColor3 = Configs_HUB.Cor_DarkText,
+        Font = Configs_HUB.Text_Font,
+        Position = UDim2.new(0, 20, 0, 25),
+        TextXAlignment = "Left",
+        AutomaticSize = "Y",
+        TextYAlignment = "Top",
+        BackgroundTransparency = 1
     })
-    
+
     local ConfirmButton = Create("TextButton", KeyMenu, {
-      Text = "Confirm",
-      Font = Configs_HUB.Text_Font,
-      TextSize = 20,
-      TextColor3 = Configs_HUB.Cor_Text,
-      Size = UDim2.new(0, 150, 0, 40),
-      AnchorPoint = Vector2.new(1, 0),
-      Position = UDim2.new(1, -35, 0, 140),
-      BackgroundColor3 = Configs_HUB.Cor_Options
+        Text = "Confirm",
+        Font = Configs_HUB.Text_Font,
+        TextSize = 20,
+        TextColor3 = Configs_HUB.Cor_Text,
+        Size = UDim2.new(0, 150, 0, 40),
+        AnchorPoint = Vector2.new(1, 0),
+        Position = UDim2.new(1, -35, 0, 140),
+        BackgroundColor3 = Configs_HUB.Cor_Options
     })Corner(ConfirmButton)
-    
+
     local GetKeyLink = Create("TextButton", KeyMenu, {
-      Text = "Get Key Link",
-      Font = Configs_HUB.Text_Font,
-      TextSize = 20,
-      TextColor3 = Configs_HUB.Cor_Text,
-      Size = UDim2.new(0, 150, 0, 40),
-      Position = UDim2.new(0, 35, 0, 140),
-      BackgroundColor3 = Configs_HUB.Cor_Options
+        Text = "Get Key Link",
+        Font = Configs_HUB.Text_Font,
+        TextSize = 20,
+        TextColor3 = Configs_HUB.Cor_Text,
+        Size = UDim2.new(0, 150, 0, 40),
+        Position = UDim2.new(0, 35, 0, 140),
+        BackgroundColor3 = Configs_HUB.Cor_Options
     })Corner(GetKeyLink)
-    
+
     local TextBox = Create("TextBox", KeyMenu, {
-      Size = UDim2.new(1, -70, 0, 40),
-      Position = UDim2.new(0, 35, 0, 90),
-      BackgroundColor3 = Configs_HUB.Cor_Options,
-      PlaceholderText = "Put the Key here",
-      Text = "",
-      TextColor3 = Configs_HUB.Cor_Text,
-      Font = Configs_HUB.Text_Font,
-      TextSize = 25
+        Size = UDim2.new(1, -70, 0, 40),
+        Position = UDim2.new(0, 35, 0, 90),
+        BackgroundColor3 = Configs_HUB.Cor_Options,
+        PlaceholderText = "Put the Key here",
+        Text = "",
+        TextColor3 = Configs_HUB.Cor_Text,
+        Font = Configs_HUB.Text_Font,
+        TextSize = 25
     })Corner(TextBox)
-    
+
     local KeyVerify = false
     CloseButton.MouseButton1Click:Connect(function()
-      local UIScale = Create("UIScale", ScreenGui)
-      CreateTween(UIScale, "Scale", 0, 0.20, true)
-      ScreenGui:Destroy()
+        local UIScale = Create("UIScale", ScreenGui)
+        CreateTween(UIScale, "Scale", 0, 0.20, true)
+        ScreenGui:Destroy()
     end)
-    
+
     ConfirmButton.MouseButton1Click:Connect(function()
-      for _,v in pairs(KeyKey) do
-        if TextBox.Text == v then
-          KeyVerify = true
+        for _,v in pairs(KeyKey) do
+            if TextBox.Text == v then
+                KeyVerify = true
+            end
         end
-      end
-      if KeyNotifications and not KeyVerify then
-        MakeNotifi({
-          Title = KeyTitle,
-          Text = KeyNotSuccess,
-          Time = 5
-        })
-      elseif KeyNotifications then
-        MakeNotifi({
-          Title = KeyTitle,
-          Text = KeySuccess,
-          Time = 5
-        })
-      end
+        if KeyNotifications and not KeyVerify then
+            MakeNotifi({Title = KeyTitle, Text = KeyNotSuccess, Time = 5})
+        elseif KeyNotifications then
+            MakeNotifi({Title = KeyTitle, Text = KeySuccess, Time = 5})
+        end
     end)
-    
+
     GetKeyLink.MouseButton1Click:Connect(function()
-      if KeyNotifications then
-        setclipboard(KeyLink)
-        MakeNotifi({
-          Title = KeyTitle,
-          Text = KeyCopyKeyLink,
-          Time = 5
-        })
-      end
+        if KeyNotifications then
+            setclipboard(KeyLink)
+            MakeNotifi({Title = KeyTitle, Text = KeyCopyKeyLink, Time = 5})
+        end
     end)
-    
-    repeat task.wait()
-    until KeyVerify
+
+    repeat task.wait() until KeyVerify
     local UIScale = Create("UIScale", KeyMenu)
     CreateTween(UIScale, "Scale", 0, 0.40, true)
     KeyMenu:Destroy()
-  end
-  
+end
+
   local Menu = Create("Frame", ScreenGui, {
     BackgroundColor3 = Configs_HUB.Cor_Hub,
     Position = UDim2.new(0.5, -500/2, 0.5, -270/2),
@@ -542,102 +563,42 @@ function MakeWindow(Configs)
     Size = UDim2.new(1, 0, 1, 0)
   })
   
-  local TweenService = game:GetService("TweenService")
-
-function MinimizeButton(Configs)
+  function MinimizeButton(Configs)
     local image = Configs.Image or ""
     local size = Configs.Size or {30, 30}
     local color = Configs.Color or Configs_HUB.Cor_Hub
     local corner = Configs.Corner or true
-    local stroke = Configs.Stroke or true
-    local strokecolor = Configs.StrokeColor or {
-        Color3.fromRGB(255,0,0), Color3.fromRGB(255,127,0),
-        Color3.fromRGB(255,255,0), Color3.fromRGB(0,255,0),
-        Color3.fromRGB(0,0,255), Color3.fromRGB(75,0,130),
-        Color3.fromRGB(148,0,211)
-    }
-
-    local Button = Create("ImageButton", ScreenGui, {  
-        Size = UDim2.new(0, size[1], 0, size[2]),  
-        Position = UDim2.new(0.15, 0, 0.15, 0),  
-        BackgroundColor3 = color,  
-        Image = image,  
-        Active = true,
-        Draggable = false
-    })
-    if corner then Corner(Button) end
-
-    if stroke then
-        local strokeFrame = Create("Frame", Button, {
-            Size = UDim2.new(1, 4, 1, 4),
-            Position = UDim2.new(0, -2, 0, -2),
-            BackgroundTransparency = 1
-        })
-        local gradient = Create("UIGradient", strokeFrame, {Color = ColorSequence.new(strokecolor)})
-        strokeFrame.BorderSizePixel = 2
-        strokeFrame.BorderColor3 = strokecolor[1]
-    end
-
+    local stroke = Configs.Stroke or false
+    local strokecolor = Configs.StrokeColor or Configs_HUB.Cor_Stroke
+    
+    local Button = Create("ImageButton", ScreenGui, {
+      Size = UDim2.new(0, size[1], 0, size[2]),
+      Position = UDim2.new(0.15, 0, 0.15, 0),
+      BackgroundColor3 = color,
+      Image = image,
+      Active = true,
+      Draggable = true
+    })if corner then Corner(Button) end if stroke then Stroke(Button, {Color = strokecolor}) end
+    
     local minimize = false
-    local IsMinimized = false
-
-    Button.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            local dragging = true
-            local mouse = game.Players.LocalPlayer:GetMouse()
-            local offsetX = mouse.X - Button.AbsolutePosition.X
-            local offsetY = mouse.Y - Button.AbsolutePosition.Y
-            
-            local moveConnection
-            moveConnection = game:GetService("RunService").RenderStepped:Connect(function()
-                if dragging then
-                    local newX = math.clamp(mouse.X - offsetX, 0, workspace.CurrentCamera.ViewportSize.X - Button.AbsoluteSize.X)
-                    local newY = math.clamp(mouse.Y - offsetY, 0, workspace.CurrentCamera.ViewportSize.Y - Button.AbsoluteSize.Y)
-                    TweenService:Create(Button, TweenInfo.new(0.1), {Position = UDim2.new(0, newX, 0, newY)}):Play()
-                else
-                    moveConnection:Disconnect()
-                end
-            end)
-
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-
-    local hoverColor = color:Lerp(Color3.new(1,1,1), 0.2)
-    Button.MouseEnter:Connect(function()
-        TweenService:Create(Button, TweenInfo.new(0.2), {BackgroundColor3 = hoverColor}):Play()
-    end)
-    Button.MouseLeave:Connect(function()
-        TweenService:Create(Button, TweenInfo.new(0.2), {BackgroundColor3 = color}):Play()
-    end)
-
-    local clickColor = color:Lerp(Color3.new(0,0,0), 0.2)
-    Button.MouseButton1Down:Connect(function()
-        TweenService:Create(Button, TweenInfo.new(0.1), {BackgroundColor3 = clickColor}):Play()
-    end)
-    Button.MouseButton1Up:Connect(function()
-        TweenService:Create(Button, TweenInfo.new(0.1), {BackgroundColor3 = color}):Play()
-    end)
-
     Button.MouseButton1Click:Connect(function()
-        if minimize then
-            minimize = false
-            Menu.Visible = true
-            local targetSize = not IsMinimized and UDim2.new(0, 500, 0, 270) or UDim2.new(0, 500, 0, 25)
-            TweenService:Create(Menu, TweenInfo.new(0.3), {Size = targetSize}):Play()
+      if minimize then
+        minimize = false
+        Menu.Visible = true
+        if not IsMinimized then
+          CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 270), 0.3, false)
         else
-            minimize = true
-            TweenService:Create(Menu, TweenInfo.new(0.3), {Size = UDim2.new(0, 500, 0, 0)}):Play()
-            Menu.Visible = false
+          CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 25), 0.3, false)
         end
+      else
+        minimize = true
+        CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 0), 0.3, true)
+        Menu.Visible = false
+      end
     end)
-end
-
-local ScrollBar = Create("ScrollingFrame", Menu, {
+  end
+  
+  local ScrollBar = Create("ScrollingFrame", Menu, {
     Size = UDim2.new(0, 140, 1, -tonumber(TopBar.Size.Y.Offset + 2)),
     Position = UDim2.new(0, 0, 1, 0),
     AnchorPoint = Vector2.new(0, 1),
@@ -646,22 +607,21 @@ local ScrollBar = Create("ScrollingFrame", Menu, {
     AutomaticCanvasSize = "Y",
     BackgroundTransparency = 1,
     ScrollBarThickness = 2
-})
-Create("UIPadding", ScrollBar, {
+  })Create("UIPadding", ScrollBar, {
     PaddingLeft = UDim.new(0, 10),
     PaddingRight = UDim.new(0, 10),
     PaddingTop = UDim.new(0, 10),
     PaddingBottom = UDim.new(0, 10)
-})
-Create("UIListLayout", ScrollBar, {Padding = UDim.new(0, 5)})
-
-local Containers = Create("Frame", Menu, {
+  })Create("UIListLayout", ScrollBar, {
+    Padding = UDim.new(0, 5)
+  })
+  
+  local Containers = Create("Frame", Menu, {
     Size = UDim2.new(1, -tonumber(ScrollBar.Size.X.Offset + 2), 1, -tonumber(TopBar.Size.Y.Offset + 2)),
     AnchorPoint = Vector2.new(1, 1),
     Position = UDim2.new(1, 0, 1, 0),
     BackgroundTransparency = 1
-})
-Corner(Containers)
+  })Corner(Containers)
 
   local function Add_Line(props)
     local line = Create("Frame", line_Containers, props)
