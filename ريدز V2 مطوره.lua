@@ -570,35 +570,60 @@ end
     local corner = Configs.Corner or true
     local stroke = Configs.Stroke or false
     local strokecolor = Configs.StrokeColor or Configs_HUB.Cor_Stroke
-    
+
     local Button = Create("ImageButton", ScreenGui, {
-      Size = UDim2.new(0, size[1], 0, size[2]),
-      Position = UDim2.new(0.15, 0, 0.15, 0),
-      BackgroundColor3 = color,
-      Image = image,
-      Active = true,
-      Draggable = true
-    })if corner then Corner(Button) end if stroke then Stroke(Button, {Color = strokecolor}) end
-    
+        Size = UDim2.new(0, size[1], 0, size[2]),
+        Position = UDim2.new(0.15, 0, 0.15, 0),
+        BackgroundColor3 = color,
+        Image = image,
+        Active = true,
+        Draggable = true
+    })
+    if corner then Corner(Button) end
+    if stroke then Stroke(Button, {Color = strokecolor}) end
+
+    local StrokeDynamic = Instance.new("UIStroke", Button)
+    StrokeDynamic.Thickness = 2
+    spawn(function()
+        local hue = 0
+        while Button.Parent do
+            hue = (hue + 0.005) % 1
+            StrokeDynamic.Color = Color3.fromHSV(hue,1,1)
+            task.wait(0.03)
+        end
+    end)
+
     local minimize = false
     Button.MouseButton1Click:Connect(function()
-      if minimize then
-        minimize = false
-        Menu.Visible = true
-        if not IsMinimized then
-          CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 270), 0.3, false)
+        if minimize then
+            minimize = false
+            Menu.Visible = true
+            CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 270), 0.3, false)
         else
-          CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 25), 0.3, false)
+            minimize = true
+            CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 0), 0.3, true)
+            Menu.Visible = false
         end
-      else
-        minimize = true
-        CreateTween(Menu, "Size", UDim2.new(0, 500, 0, 0), 0.3, true)
-        Menu.Visible = false
-      end
     end)
-  end
-  
-  local ScrollBar = Create("ScrollingFrame", Menu, {
+
+    Button.MouseButton1Down:Connect(function()
+        local mouse = game.Players.LocalPlayer:GetMouse()
+        local offset = Vector2.new(mouse.X - Button.AbsolutePosition.X, mouse.Y - Button.AbsolutePosition.Y)
+        local move
+        move = mouse.Move:Connect(function()
+            local newX = math.clamp(mouse.X - offset.X, 0, workspace.CurrentCamera.ViewportSize.X - Button.AbsoluteSize.X)
+            local newY = math.clamp(mouse.Y - offset.Y, 0, workspace.CurrentCamera.ViewportSize.Y - Button.AbsoluteSize.Y)
+            CreateTween(Button, "Position", UDim2.new(0, newX, 0, newY), 0.1, true)
+        end)
+        local release
+        release = mouse.Button1Up:Connect(function()
+            move:Disconnect()
+            release:Disconnect()
+        end)
+    end)
+end
+
+local ScrollBar = Create("ScrollingFrame", Menu, {
     Size = UDim2.new(0, 140, 1, -tonumber(TopBar.Size.Y.Offset + 2)),
     Position = UDim2.new(0, 0, 1, 0),
     AnchorPoint = Vector2.new(0, 1),
@@ -607,21 +632,34 @@ end
     AutomaticCanvasSize = "Y",
     BackgroundTransparency = 1,
     ScrollBarThickness = 2
-  })Create("UIPadding", ScrollBar, {
+})
+Create("UIPadding", ScrollBar, {
     PaddingLeft = UDim.new(0, 10),
     PaddingRight = UDim.new(0, 10),
     PaddingTop = UDim.new(0, 10),
     PaddingBottom = UDim.new(0, 10)
-  })Create("UIListLayout", ScrollBar, {
+})
+Create("UIListLayout", ScrollBar, {
     Padding = UDim.new(0, 5)
-  })
-  
-  local Containers = Create("Frame", Menu, {
+})
+
+local Containers = Create("Frame", Menu, {
     Size = UDim2.new(1, -tonumber(ScrollBar.Size.X.Offset + 2), 1, -tonumber(TopBar.Size.Y.Offset + 2)),
     AnchorPoint = Vector2.new(1, 1),
     Position = UDim2.new(1, 0, 1, 0),
     BackgroundTransparency = 1
-  })Corner(Containers)
+})
+Corner(Containers)
+local ContainerStroke = Instance.new("UIStroke", Containers)
+ContainerStroke.Thickness = 2
+spawn(function()
+    local hue = 0
+    while Containers.Parent do
+        hue = (hue + 0.005) % 1
+        ContainerStroke.Color = Color3.fromHSV(hue,1,1)
+        task.wait(0.03)
+    end
+end)
 
   local function Add_Line(props)
     local line = Create("Frame", line_Containers, props)
