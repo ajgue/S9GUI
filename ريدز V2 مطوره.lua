@@ -1,11 +1,11 @@
 local Configs_HUB = { 
-  Cor_Hub = Color3.fromRGB(0, 0, 0), 
-  Cor_Options = Color3.fromRGB(0, 0, 0), 
-  Cor_Stroke = Color3.fromRGB(0, 255, 200), 
-  Cor_Text = Color3.fromRGB(240, 240, 240), 
-  Cor_DarkText = Color3.fromRGB(240, 240, 240), 
-  Corner_Radius = UDim.new(0, 15), 
-  Text_Font = Enum.Font.FredokaOne 
+    Cor_Hub = Color3.fromRGB(0, 0, 0), 
+    Cor_Options = Color3.fromRGB(0, 0, 0), 
+    Cor_Stroke = Color3.fromRGB(0, 255, 200), 
+    Cor_Text = Color3.fromRGB(240, 240, 240), 
+    Cor_DarkText = Color3.fromRGB(240, 240, 240), 
+    Corner_Radius = UDim.new(0, 15), 
+    Text_Font = Enum.Font.FredokaOne 
 }
 
 local CoreGui = game:GetService("CoreGui")
@@ -14,207 +14,251 @@ local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
 local function Create(instance, parent, props)
-  local new = Instance.new(instance, parent)
-  if props then
-    table.foreach(props, function(prop, value)
-      new[prop] = value
-    end)
-  end
-  return new
+    local new = Instance.new(instance, parent)
+    if props then
+        for prop, value in pairs(props) do
+            new[prop] = value
+        end
+    end
+    return new
 end
 
 local function SetProps(instance, props)
-  if instance and props then
-    table.foreach(props, function(prop, value)
-      instance[prop] = value
-    end)
-  end
-  return instance
+    if instance and props then
+        for prop, value in pairs(props) do
+            instance[prop] = value
+        end
+    end
+    return instance
 end
 
 local function Corner(parent, props)
-  local new = Create("UICorner", parent)
-  new.CornerRadius = Configs_HUB.Corner_Radius
-  if props then
-    SetProps(new, props)
-  end
-  return new
+    local new = Create("UICorner", parent)
+    new.CornerRadius = Configs_HUB.Corner_Radius
+    if props then SetProps(new, props) end
+    return new
 end
 
 local function Stroke(parent, props)
-  local new = Create("UIStroke", parent)
-  new.Color = Configs_HUB.Cor_Stroke
-  new.ApplyStrokeMode = "Border"
-  new.Thickness = 2
-  
-  local gradient = Instance.new("UIGradient")
-  gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 200)),
-    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 100, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 200))
-  }
-  gradient.Rotation = 0
-  gradient.Parent = new
-  
-  coroutine.wrap(function()
-    while new.Parent do
-      gradient.Rotation = (gradient.Rotation + 1) % 360
-      RunService.RenderStepped:Wait()
-    end
-  end)()
-  
-  if props then
-    SetProps(new, props)
-  end
-  return new
+    local new = Create("UIStroke", parent)
+    new.Color = Configs_HUB.Cor_Stroke
+    new.ApplyStrokeMode = "Border"
+    new.Thickness = 2
+    
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 200)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 100, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 200))
+    }
+    gradient.Rotation = 0
+    gradient.Parent = new
+    
+    coroutine.wrap(function()
+        while new.Parent do
+            gradient.Rotation = (gradient.Rotation + 1) % 360
+            RunService.RenderStepped:Wait()
+        end
+    end)()
+    
+    if props then SetProps(new, props) end
+    return new
 end
 
 local function CreateTween(instance, prop, value, time, tweenWait)
-  local tween = TweenService:Create(instance,
-  TweenInfo.new(time, Enum.EasingStyle.Linear),
-  {[prop] = value})
-  tween:Play()
-  if tweenWait then
-    tween.Completed:Wait()
-  end
+    local tween = TweenService:Create(instance, TweenInfo.new(time, Enum.EasingStyle.Linear), {[prop] = value})
+    tween:Play()
+    if tweenWait then tween.Completed:Wait() end
 end
 
 local function TextSetColor(instance)
-  instance.MouseEnter:Connect(function()
-    CreateTween(instance, "TextColor3", Color3.fromRGB(30, 140, 200), 0.4, true)
-  end)
-  instance.MouseLeave:Connect(function()
-    CreateTween(instance, "TextColor3", Configs_HUB.Cor_Text, 0.4, false)
-  end)
+    instance.MouseEnter:Connect(function()
+        CreateTween(instance, "TextColor3", Color3.fromRGB(30, 140, 200), 0.4, true)
+    end)
+    instance.MouseLeave:Connect(function()
+        CreateTween(instance, "TextColor3", Configs_HUB.Cor_Text, 0.4, false)
+    end)
 end
 
-local ScreenGui = Create("ScreenGui", CoreGui, {
-  Name = "REDz HUB library"
-})
+local ScreenGui = Create("ScreenGui", CoreGui, {Name = "REDz HUB library"})
 
-ScreenFind = CoreGui:FindFirstChild(ScreenGui.Name)
-if ScreenFind and ScreenFind ~= ScreenGui then
-  ScreenFind:Destroy()
-end
+local ScreenFind = CoreGui:FindFirstChild(ScreenGui.Name)
+if ScreenFind and ScreenFind ~= ScreenGui then ScreenFind:Destroy() end
 
 function DestroyScript()
-  ScreenGui:Destroy()
-end
-
-function DestroyScript()
-  ScreenGui:Destroy()
+    ScreenGui:Destroy()
 end
 
 local Menu_Notifi = Create("Frame", ScreenGui, {
-  Size = UDim2.new(0, 300, 1, 0),
-  Position = UDim2.new(1, 0, 0, 0),
-  AnchorPoint = Vector2.new(1, 0),
-  BackgroundTransparency = 1
+    Size = UDim2.new(0, 300, 1, 0),
+    Position = UDim2.new(1, 0, 0, 0),
+    AnchorPoint = Vector2.new(1, 0),
+    BackgroundTransparency = 1
 })
 
-local Padding = Create("UIPadding", Menu_Notifi, {
-  PaddingLeft = UDim.new(0, 25),
-  PaddingTop = UDim.new(0, 25),
-  PaddingBottom = UDim.new(0, 50)
+Create("UIPadding", Menu_Notifi, {
+    PaddingLeft = UDim.new(0, 25),
+    PaddingTop = UDim.new(0, 25),
+    PaddingBottom = UDim.new(0, 50)
 })
 
-local ListLayout = Create("UIListLayout", Menu_Notifi, {
-  Padding = UDim.new(0, 15),
-  VerticalAlignment = "Bottom"
+Create("UIListLayout", Menu_Notifi, {
+    Padding = UDim.new(0, 15),
+    VerticalAlignment = "Bottom"
 })
 
 function MakeNotifi(Configs)
-  local Title = Configs.Title or "REDz HUB"
-  local text = Configs.Text or "Notificação"
-  local timewait = Configs.Time or 5
-  
-  local Frame1 = Create("Frame", Menu_Notifi, {
-    Size = UDim2.new(2, 0, 0, 0),
-    BackgroundTransparency = 1,
-    AutomaticSize = "Y",
-    Name = "Title"
-  })
-  
-  local Frame2 = Create("Frame", Frame1, {
-    Size = UDim2.new(0, Menu_Notifi.Size.X.Offset - 50, 0, 0),
-    BackgroundColor3 = Configs_HUB.Cor_Hub,
-    Position = UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0),
-    AutomaticSize = "Y"
-  })Corner(Frame2)
-  
-  local TextLabel = Create("TextLabel", Frame2, {
-    Size = UDim2.new(1, 0, 0, 25),
-    Font = Configs_HUB.Text_Font,
-    BackgroundTransparency = 1,
-    Text = Title,
-    TextSize = 20,
-    Position = UDim2.new(0, 20, 0, 5),
-    TextXAlignment = "Left",
-    TextColor3 = Configs_HUB.Cor_Text
-  })
-  
-  local TextButton = Create("TextButton", Frame2, {
-    Text = "X",
-    Font = Configs_HUB.Text_Font,
-    TextSize = 20,
-    BackgroundTransparency = 1,
-    TextColor3 = Color3.fromRGB(200, 200, 200),
-    Position = UDim2.new(1, -5, 0, 5),
-    AnchorPoint = Vector2.new(1, 0),
-    Size = UDim2.new(0, 25, 0, 25)
-  })
-  
-  local TextLabel = Create("TextLabel", Frame2, {
-    Size = UDim2.new(1, -30, 0, 0),
-    Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10),
-    TextSize = 15,
-    TextColor3 = Configs_HUB.Cor_DarkText,
-    TextXAlignment = "Left",
-    TextYAlignment = "Top",
-    AutomaticSize = "Y",
-    Text = text,
-    Font = Configs_HUB.Text_Font,
-    BackgroundTransparency = 1,
-    AutomaticSize = Enum.AutomaticSize.Y,
-    TextWrapped = true
-  })
-  
-  local FrameSize = Create("Frame", Frame2, {
-    Size = UDim2.new(1, 0, 0, 2),
-    BackgroundColor3 = Configs_HUB.Cor_Stroke,
-    Position = UDim2.new(0, 2, 0, 30),
-    BorderSizePixel = 0
-  })Corner(FrameSize)Create("Frame", Frame2, {
-    Size = UDim2.new(0, 0, 0, 5),
-    Position = UDim2.new(0, 0, 1, 5),
-    BackgroundTransparency = 1
-  })
-  
-  task.spawn(function()
-    CreateTween(FrameSize, "Size", UDim2.new(0, 0, 0, 2), timewait, true)
-  end)
-  
-  TextButton.MouseButton1Click:Connect(function()
-    CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
-    CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
-    Frame1:Destroy()
-  end)
-  
-  task.spawn(function()
-    CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
-    CreateTween(Frame2, "Position", UDim2.new(), 0.1, true)task.wait(timewait)
-    if Frame2 then
-      CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
-      CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
-      Frame1:Destroy()
-    end
-  end)
+    local Title = Configs.Title or "REDz HUB"
+    local text = Configs.Text or "Notificação"
+    local timewait = Configs.Time or 5
+    
+    local Frame1 = Create("Frame", Menu_Notifi, {
+        Size = UDim2.new(2, 0, 0, 0),
+        BackgroundTransparency = 1,
+        AutomaticSize = "Y",
+        Name = "Title"
+    })
+    
+    local Frame2 = Create("Frame", Frame1, {
+        Size = UDim2.new(0, Menu_Notifi.Size.X.Offset - 50, 0, 0),
+        BackgroundColor3 = Configs_HUB.Cor_Hub,
+        Position = UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0),
+        AutomaticSize = "Y"
+    }) Corner(Frame2)
+    
+    local TextLabel = Create("TextLabel", Frame2, {
+        Size = UDim2.new(1, 0, 0, 25),
+        Font = Configs_HUB.Text_Font,
+        BackgroundTransparency = 1,
+        Text = Title,
+        TextSize = 20,
+        Position = UDim2.new(0, 20, 0, 5),
+        TextXAlignment = "Left",
+        TextColor3 = Configs_HUB.Cor_Text
+    })
+    
+    local TextButton = Create("TextButton", Frame2, {
+        Text = "X",
+        Font = Configs_HUB.Text_Font,
+        TextSize = 20,
+        BackgroundTransparency = 1,
+        TextColor3 = Color3.fromRGB(200, 200, 200),
+        Position = UDim2.new(1, -5, 0, 5),
+        AnchorPoint = Vector2.new(1, 0),
+        Size = UDim2.new(0, 25, 0, 25)
+    })
+    
+    local TextLabel2 = Create("TextLabel", Frame2, {
+        Size = UDim2.new(1, -30, 0, 0),
+        Position = UDim2.new(0, 20, 0, TextButton.Size.Y.Offset + 10),
+        TextSize = 15,
+        TextColor3 = Configs_HUB.Cor_DarkText,
+        TextXAlignment = "Left",
+        TextYAlignment = "Top",
+        AutomaticSize = "Y",
+        Text = text,
+        Font = Configs_HUB.Text_Font,
+        BackgroundTransparency = 1,
+        TextWrapped = true
+    })
+    
+    local FrameSize = Create("Frame", Frame2, {
+        Size = UDim2.new(1, 0, 0, 2),
+        BackgroundColor3 = Configs_HUB.Cor_Stroke,
+        Position = UDim2.new(0, 2, 0, 30),
+        BorderSizePixel = 0
+    }) Corner(FrameSize) 
+
+    Create("Frame", Frame2, {
+        Size = UDim2.new(0, 0, 0, 5),
+        Position = UDim2.new(0, 0, 1, 5),
+        BackgroundTransparency = 1
+    })
+    
+    task.spawn(function()
+        CreateTween(FrameSize, "Size", UDim2.new(0, 0, 0, 2), timewait, true)
+    end)
+    
+    TextButton.MouseButton1Click:Connect(function()
+        CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
+        CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
+        Frame1:Destroy()
+    end)
+    
+    task.spawn(function()
+        CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.5, true)
+        CreateTween(Frame2, "Position", UDim2.new(), 0.1, true)
+        task.wait(timewait)
+        if Frame2 then
+            CreateTween(Frame2, "Position", UDim2.new(0, -20, 0, 0), 0.1, true)
+            CreateTween(Frame2, "Position", UDim2.new(0, Menu_Notifi.Size.X.Offset, 0, 0), 0.5, true)
+            Frame1:Destroy()
+        end
+    end)
 end
 
 function MakeWindow(Configs)
-  local title = Configs.Hub.Title or "REDz HUB"
-  local Anim_Title = Configs.Hub.Animation or "by : redz9999"
-  
+    local title = Configs.Hub.Title or "RemixHUB"
+    local Anim_Title = Configs.Hub.Animation or "by : RemixHUB"
+
+    local Window = Create("Frame", ScreenGui, {
+        Size = UDim2.new(0, 500, 0, 300),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
+        BackgroundTransparency = 0.3,
+        BackgroundColor3 = Color3.fromRGB(0,0,0)
+    })
+
+    local BackgroundImage = Create("ImageLabel", Window, {
+        Size = UDim2.new(1,0,1,0),
+        Position = UDim2.new(0,0,0,0),
+        BackgroundTransparency = 1,
+        Image = "rbxassetid://98360849741395",
+        ScaleType = Enum.ScaleType.Crop
+    })
+
+    local Gradient = Instance.new("UIGradient")
+    Gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255,0,0)),
+        ColorSequenceKeypoint.new(0.2, Color3.fromRGB(255,127,0)),
+        ColorSequenceKeypoint.new(0.4, Color3.fromRGB(255,255,0)),
+        ColorSequenceKeypoint.new(0.6, Color3.fromRGB(0,255,0)),
+        ColorSequenceKeypoint.new(0.8, Color3.fromRGB(0,0,255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(139,0,255))
+    }
+    Gradient.Rotation = 45
+    Gradient.Parent = Window
+
+    local TitleLabel = Create("TextLabel", Window, {
+        Size = UDim2.new(1,0,0,50),
+        Position = UDim2.new(0,0,0,0),
+        BackgroundTransparency = 1,
+        Text = title,
+        Font = Configs_HUB.Text_Font,
+        TextSize = 30,
+        TextColor3 = Color3.fromRGB(255,0,0),
+        TextStrokeTransparency = 0.7
+    })
+
+    coroutine.wrap(function()
+        local colors = {
+            Color3.fromRGB(255,0,0),
+            Color3.fromRGB(255,127,0),
+            Color3.fromRGB(255,255,0),
+            Color3.fromRGB(0,255,0),
+            Color3.fromRGB(0,0,255),
+            Color3.fromRGB(139,0,255)
+        }
+        local i = 1
+        while TitleLabel.Parent do
+            TitleLabel.TextColor3 = colors[i]
+            i = i + 1
+            if i > #colors then i = 1 end
+            RunService.RenderStepped:Wait()
+        end
+    end)()
+end
+
   local KeySystem = Configs.Key.KeySystem or false
 local KeyTitle = Configs.Key.Title or "Key System"
 local KeyDescription = Configs.Key.Description or ".-."
@@ -1422,9 +1466,9 @@ end
     })Create("UIListLayout", ScrollBar, {
       Padding = UDim.new(0, 5)
     })
-    function AddDropdownColor(parent, Configs)
-    local DropdownName = Configs.Name or "Dropdown Color"
-    local Options = Configs.Options or {"Black", "White", "Red", "Lime"}
+    function AddDrobColor(parent, Configs)
+    local DropdownName = Configs.Name or "Drob Color"
+    local Options = Configs.Options or {"أحمر", "برتقالي", "أصفر", "أخضر", "أزرق", "نيلي", "بنفسجي"}
     local Callback = Configs.Callback or function() end
 
     local Frame = Create("TextButton", parent, {
@@ -1478,30 +1522,48 @@ end
         Padding = UDim.new(0, 5)
     })
 
-    local ColorValues = {
-        Black = Color3.fromRGB(0, 0, 0),
-        White = Color3.fromRGB(255, 255, 255),
-        Red = Color3.fromRGB(255, 0, 0),
-        Lime = Color3.fromRGB(0, 255, 0)
+    local RainbowColors = {
+        ["أحمر"] = Color3.fromRGB(255, 0, 0),
+        ["برتقالي"] = Color3.fromRGB(255, 128, 0),
+        ["أصفر"] = Color3.fromRGB(255, 255, 0),
+        ["أخضر"] = Color3.fromRGB(0, 255, 0),
+        ["أزرق"] = Color3.fromRGB(0, 100, 255),
+        ["نيلي"] = Color3.fromRGB(75, 0, 130),
+        ["بنفسجي"] = Color3.fromRGB(128, 0, 128)
     }
 
-    for _, optionName in ipairs(Options) do
+    for _, colorName in ipairs(Options) do
         local button = Create("TextButton", ScrollBar, {
             Size = UDim2.new(1, 0, 0, 25),
             BackgroundColor3 = Configs_HUB.Cor_Hub,
-            Text = optionName,
+            Text = colorName,
             TextColor3 = Configs_HUB.Cor_DarkText,
             Font = Configs_HUB.Text_Font
         })
         Corner(button) Stroke(button)
 
         button.MouseButton1Click:Connect(function()
-            local colorValue = ColorValues[optionName] or Color3.fromRGB(255, 255, 255)
+            local colorValue = RainbowColors[colorName] or Color3.fromRGB(255, 255, 255)
+
             for _, child in ipairs(parent:GetDescendants()) do
                 if child:IsA("TextButton") or child:IsA("ImageButton") then
-                    child.BackgroundColor3 = colorValue
+                    local stroke = child:FindFirstChildOfClass("UIStroke")
+                    if stroke then
+                        stroke.Color = colorValue
+                    else
+                        local newStroke = Instance.new("UIStroke", child)
+                        newStroke.Thickness = 1.5
+                        newStroke.Color = colorValue
+                    end
+
+                    local corner = child:FindFirstChildOfClass("UICorner")
+                    if not corner then
+                        local newCorner = Instance.new("UICorner", child)
+                        newCorner.CornerRadius = UDim.new(0, 8)
+                    end
                 end
             end
+
             Callback(colorValue)
             ScrollBar.Visible = false
             ScrollBar.Size = UDim2.new(1, 0, 0, 0)
@@ -1515,6 +1577,7 @@ end
         ScrollBar.Size = DropdownVisible and UDim2.new(1, 0, 0, #Options * 30) or UDim2.new(1, 0, 0, 0)
     end)
 end
+
     local function AddOption(OptionName)
       local TextButton = Create("TextButton", ScrollBar, {
         Size = UDim2.new(1, 0, 0, 15),
@@ -1873,3 +1936,4 @@ end
   end
   return Menu
 end
+
